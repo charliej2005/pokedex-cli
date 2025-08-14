@@ -12,19 +12,19 @@ func TestCleanInput(t *testing.T) {
 			expected: []string{"hello", "world"},
 		},
 		{
-			input:    "lorem ipsum",
+			input:    "lOrem ipsUm",
 			expected: []string{"lorem", "ipsum"},
 		},
 		{
-			input:    "dolor     sit   amet   ",
+			input:    "dOLor     sit   AMET   ",
 			expected: []string{"dolor", "sit", "amet"},
 		},
 		{
-			input:    "     gotta  catch     em  all",
+			input:    "     gotta  CATCH     em  all",
 			expected: []string{"gotta", "catch", "em", "all"},
 		},
 		{
-			input:    "i wanna be the very best",
+			input:    "i wanna be the Very best",
 			expected: []string{"i", "wanna", "be", "the", "very", "best"},
 		},
 		{
