@@ -33,3 +33,6 @@ go.work.sum
 
 # Executables
 pokedex-cli
+
+# Logs
+repl.log
