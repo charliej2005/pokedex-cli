@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	pokeapi "github.com/charliej2005/pokedex-cli/internal"
 )
 
-func StartRepl() {
+func StartRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
 
@@ -24,9 +26,9 @@ func StartRepl() {
 		}
 		command, ok := commands[userCommand]
 		if ok {
-			err := command.callback()
+			err := command.callback(cfg)
 			if err != nil {
-				fmt.Printf("error executing command: %v", err)
+				fmt.Printf("error executing command: %v\n", err)
 			}
 		} else {
 			fmt.Printf("Unknown command\n")
@@ -41,7 +43,13 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(cfg *config) error
+}
+
+type config struct {
+	pokeapiClient        pokeapi.Client
+	nextLocationsURL     *string
+	previousLocationsURL *string
 }
 
 func getCommands() map[string]cliCommand {
@@ -50,6 +58,16 @@ func getCommands() map[string]cliCommand {
 			name:        "help",
 			description: "Displays a help message",
 			callback:    commandHelp,
+		},
+		"map": {
+			name:        "map",
+			description: "Display the next page of locations",
+			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Display the previous page of locations",
+			callback:    commandMapb,
 		},
 		"exit": {
 			name:        "exit",
