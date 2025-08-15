@@ -19,14 +19,18 @@ func StartRepl(cfg *config) {
 		userInput := scanner.Text()
 		cleanedInput := cleanInput(userInput)
 		var userCommand string
+		userArgs := []string{}
 		if len(cleanedInput) == 0 {
 			userCommand = ""
 		} else {
 			userCommand = cleanedInput[0]
+			if len(cleanedInput) > 1 {
+				userArgs = cleanedInput[1:]
+			}
 		}
 		command, ok := commands[userCommand]
 		if ok {
-			err := command.callback(cfg)
+			err := command.callback(cfg, userArgs...)
 			if err != nil {
 				fmt.Printf("error executing command: %v\n", err)
 			}
@@ -43,7 +47,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(cfg *config) error
+	callback    func(cfg *config, args ...string) error
 }
 
 type config struct {
