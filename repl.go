@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	pokeapi "github.com/charliej2005/pokedex-cli/internal"
+	"github.com/charliej2005/pokedex-cli/internal/pokeapi"
 )
 
 func StartRepl(cfg *config) {
