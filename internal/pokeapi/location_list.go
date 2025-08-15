@@ -12,6 +12,15 @@ func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 		url = *pageURL
 	}
 
+	if data, ok := c.cache.Get(url); ok {
+		locationRes := RespShallowLocations{}
+		err := json.Unmarshal(data, &locationRes)
+		if err != nil {
+			return RespShallowLocations{}, err
+		}
+		return locationRes, nil
+	}
+
 	res, err := http.Get(url)
 	if err != nil {
 		return RespShallowLocations{}, err
